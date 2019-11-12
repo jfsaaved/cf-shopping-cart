@@ -17,10 +17,30 @@ plugins {
     id 'java'
 }
 
+apply plugin: 'org.springframework.boot'
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'io.jfsaaved.cf.shopping.cart.Application'
+        )
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 }
+
+
+bootRun.environment([
+        "WELCOME_MESSAGE": "hello there",
+])
+
+test.environment([
+        "WELCOME_MESSAGE": "Hello from test",
+])
