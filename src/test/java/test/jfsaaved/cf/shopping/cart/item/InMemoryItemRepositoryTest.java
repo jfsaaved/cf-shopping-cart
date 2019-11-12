@@ -4,14 +4,12 @@ import io.jfsaaved.cf.shopping.cart.item.InMemoryItemRepository;
 import io.jfsaaved.cf.shopping.cart.item.Item;
 import org.junit.Test;
 
-import java.time.LocalDate;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class InMemoryItemRepositoryTest {
 
     @Test
-    public void create() throws Exception {
+    public void create() {
         InMemoryItemRepository itemRepository = new InMemoryItemRepository();
 
         Item createdItem = itemRepository.create(new Item("book 1", 13L));
@@ -25,18 +23,18 @@ public class InMemoryItemRepositoryTest {
     }
 
     @Test
-    public void find() throw Exception {
+    public void find() {
         InMemoryItemRepository itemRepository = new InMemoryItemRepository();
         Item itemCreated =  itemRepository.create(new Item("book 1", 13L));
 
         long id = 1L;
         Item expected = new Item(id, "book 1", 13L);
-        Item actual = iteamRepository.find(id);
+        Item actual = itemRepository.find(id);
         assertThat(expected).isEqualTo(actual);
     }
 
     @Test
-    public void update() throw Exception {
+    public void update() {
         InMemoryItemRepository itemRepository = new InMemoryItemRepository();
         Item itemCreated = itemRepository.create(new Item("book 1", 13L));
 
@@ -46,6 +44,16 @@ public class InMemoryItemRepositoryTest {
 
         assertThat(actual).isEqualTo(expected);
         assertThat(itemRepository.find(id)).isEqualTo(expected);
+    }
+
+    @Test
+    public void delete()  {
+
+        InMemoryItemRepository itemRepository = new InMemoryItemRepository();
+        Item itemCreated = itemRepository.create(new Item("book 1", 13L));
+        itemRepository.delete(itemCreated.getId());
+        assertThat(itemRepository.list()).isEmpty();
+
     }
 
 }
