@@ -54,4 +54,26 @@ public class ItemControllerTest {
         assertThat(response.getBody()).isEqualTo(expected);
     }
 
+    @Test
+    public void testUpdate() {
+        Long itemId = 1L;
+        Item expected = new Item(itemId, "book 1", BigDecimal.valueOf(13));
+
+        doReturn(expected).when(itemRepository).update(eq(itemId), any(Item.class));
+
+        ResponseEntity response = itemController.update(itemId, expected);
+        verify(itemRepository).update(itemId, expected);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo(expected);
+    }
+
+    @Test
+    public void testDelete() {
+        long itemId = 1L;
+        ResponseEntity response = itemController.delete(itemId);
+        verify(itemRepository).delete(itemId);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
+
 }
