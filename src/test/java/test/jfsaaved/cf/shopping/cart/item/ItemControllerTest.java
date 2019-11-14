@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,6 +57,30 @@ public class ItemControllerTest {
     }
 
     @Test
+    public void testRead_NotFound() {
+        Long nonExistentId = 2L;
+        doReturn(null).when(itemRepository).find(nonExistentId);
+
+        ResponseEntity response = itemController.read(nonExistentId);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void testList(){
+        Collection<Item> expected = new ArrayList<>();
+        expected.add(new Item(1L, "book 1", BigDecimal.valueOf(13)));
+        expected.add(new Item(2L, "book 2", BigDecimal.valueOf(13)));
+        doReturn(expected).when(itemRepository).list();
+
+        ResponseEntity response = itemController.list();
+        verify(itemRepository).list();
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo(expected);
+    }
+
+    @Test
     public void testUpdate() {
         Long itemId = 1L;
         Item expected = new Item(itemId, "book 1", BigDecimal.valueOf(13));
@@ -66,6 +92,11 @@ public class ItemControllerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(expected);
+    }
+
+    @Test
+    public void testUpdate_NotFound() {
+
     }
 
     @Test

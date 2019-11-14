@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/items")
 public class ItemController {
@@ -20,20 +22,29 @@ public class ItemController {
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<Item>> list() {
+        List<Item> result = repository.list();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @GetMapping("{id}")
-    public ResponseEntity<Item> read(@RequestParam Long id) {
+    public ResponseEntity<Item> read(@PathVariable Long id) {
         Item result = repository.find(id);
-        return new ResponseEntity<>(result, HttpStatus.FOUND);
+        if(result != null)
+            return new ResponseEntity<>(result, HttpStatus.FOUND);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Item> update(@RequestParam Long id, @RequestBody Item item) {
+    public ResponseEntity<Item> update(@PathVariable Long id, @RequestBody Item item) {
         Item result = repository.update(id, item);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Item> delete( @RequestParam Long id ) {
+    public ResponseEntity<Item> delete( @PathVariable Long id ) {
         repository.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
