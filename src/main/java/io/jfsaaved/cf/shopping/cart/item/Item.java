@@ -67,7 +67,6 @@ public class Item {
     public int hashCode() {
         final int prime = 31;
         int result = (int) (id ^ (id >>> 32));
-
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((price == null) ? 0 : price.hashCode());
 
