@@ -95,14 +95,13 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void testUpdate_NotFound() {
-
-    }
-
-    @Test
     public void testDelete() {
-        long itemId = 1L;
+        Long itemId = 1L;
+        Item expected = new Item(itemId, "book 1", BigDecimal.valueOf(13));
+        doReturn(expected).when(itemRepository).find(itemId);
+
         ResponseEntity response = itemController.delete(itemId);
+
         verify(itemRepository).delete(itemId);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
