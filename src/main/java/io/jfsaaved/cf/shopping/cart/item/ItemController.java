@@ -44,9 +44,13 @@ public class ItemController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Item> delete( @PathVariable Long id ) {
-        repository.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity delete( @PathVariable Long id ) {
+        if(repository.find(id) != null) {
+            repository.delete(id);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

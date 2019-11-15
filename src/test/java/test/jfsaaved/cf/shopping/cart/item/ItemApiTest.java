@@ -61,7 +61,7 @@ public class ItemApiTest {
         Long id = createItem();
         Item updatedItem = new Item("book 3", BigDecimal.valueOf(13));
 
-        ResponseEntity<String> response = restTemplate.exchange("/item/" + id, HttpMethod.PUT,
+        ResponseEntity<String> response = restTemplate.exchange("/items/" + id, HttpMethod.PUT,
                 new HttpEntity<>(updatedItem, null), String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -76,13 +76,13 @@ public class ItemApiTest {
     public void testDelete() throws Exception {
         Long id = createItem();
 
-        ResponseEntity<String> response = restTemplate.exchange("/item/" + id, HttpMethod.DELETE,
-                null, String.class);
+        ResponseEntity<String> response = restTemplate.exchange("/items/" + id,
+                HttpMethod.DELETE, null, String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
         ResponseEntity<String> otherResponse = restTemplate.getForEntity("/item/" + id, String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(otherResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     private Long createItem() {
