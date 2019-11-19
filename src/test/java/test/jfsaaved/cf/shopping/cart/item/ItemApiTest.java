@@ -1,8 +1,11 @@
 package test.jfsaaved.cf.shopping.cart.item;
 
 import com.jayway.jsonpath.DocumentContext;
+import com.mysql.cj.jdbc.MysqlDataSource;
 import io.jfsaaved.cf.shopping.cart.Application;
 import io.jfsaaved.cf.shopping.cart.item.Item;
+import io.jfsaaved.cf.shopping.cart.item.JdbcItemRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -28,6 +32,15 @@ public class ItemApiTest {
     @Autowired
     private TestRestTemplate restTemplate;
     private Item item = new Item("book 1", BigDecimal.valueOf(13));
+
+    @Before
+    public void setUp() {
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setUrl(System.getenv("SPRING_DATASOURCE_URL"));
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.execute("TRUNCATE items");
+    }
 
     @Test
     public void testCreate() throws Exception {
