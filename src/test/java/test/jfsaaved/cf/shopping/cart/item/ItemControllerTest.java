@@ -3,6 +3,9 @@ package test.jfsaaved.cf.shopping.cart.item;
 import io.jfsaaved.cf.shopping.cart.item.Item;
 import io.jfsaaved.cf.shopping.cart.item.ItemController;
 import io.jfsaaved.cf.shopping.cart.item.ItemRepository;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -24,7 +27,18 @@ public class ItemControllerTest {
     @Before
     public void setUp() {
         itemRepository = mock(ItemRepository.class);
-        itemController = new ItemController(itemRepository);
+
+        MeterRegistry meterRegistry = mock(MeterRegistry.class);
+
+        doReturn(mock(DistributionSummary.class))
+                .when(meterRegistry)
+                .summary("item.summary");
+
+        doReturn(mock(Counter.class))
+                .when(meterRegistry)
+                .counter("item.actionCounter");
+
+        itemController = new ItemController(itemRepository, meterRegistry);
     }
 
     @Test
