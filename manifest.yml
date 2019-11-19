@@ -4,6 +4,7 @@ applications:
     path: build/libs/cf-shopping-cart.jar
     routes:
     - route: cf-shopping-cart-jfsaaved-piggy.cfapps.io
-    random-route: true
+    services:
+    - shopping-cart-database
     env:
       JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'

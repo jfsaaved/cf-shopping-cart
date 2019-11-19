@@ -26,7 +26,7 @@ public class JdbcItemRepository implements ItemRepository {
 
         jdbcTemplate.update(connection -> {
            PreparedStatement statement = connection.prepareStatement(
-                   "INSERT INTO items (id, name, price) VALUES(?, ?, ?)",
+                   "INSERT INTO items (id, name, price) VALUES (?, ?, ?)",
                    RETURN_GENERATED_KEYS
            );
 
