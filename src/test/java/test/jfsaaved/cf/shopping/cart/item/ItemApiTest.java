@@ -39,7 +39,7 @@ public class ItemApiTest {
         dataSource.setUrl(System.getenv("SPRING_DATASOURCE_URL"));
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.execute("DROP items");
+        jdbcTemplate.execute("TRUNCATE items");
     }
 
     @Test

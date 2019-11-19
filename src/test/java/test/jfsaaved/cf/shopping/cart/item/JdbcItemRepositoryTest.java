@@ -28,7 +28,7 @@ public class JdbcItemRepositoryTest {
 
         repository = new JdbcItemRepository(dataSource);
         jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.execute("DROP items");
+        jdbcTemplate.execute("TRUNCATE items");
     }
 
     @Test
